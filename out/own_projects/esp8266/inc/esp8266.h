@@ -1,4 +1,7 @@
 /* Copyright 2014, Mariano Cerdeiro
+ * Copyright 2014, Pablo Ridolfi
+ * Copyright 2014, Juan Cecconi
+ * Copyright 2014, Gustavo Muro
  *
  * This file is part of CIAA Firmware.
  *
@@ -30,15 +33,19 @@
  *
  */
 
-/** \brief Short description of this file
+#ifndef _ESP8266_H_
+#define _ESP8266_H_
+/** \brief Blinking example header file
  **
- ** Long description of this file
+ ** This is a mini example of the CIAA Firmware
  **
  **/
 
 /** \addtogroup CIAA_Firmware CIAA Firmware
  ** @{ */
-/** \addtogroup Template Template to start a new module
+/** \addtogroup Examples CIAA Firmware Examples
+ ** @{ */
+/** \addtogroup Blinking Blinking example header file
  ** @{ */
 
 /*
@@ -54,75 +61,18 @@
  */
 
 /*==================[inclusions]=============================================*/
-#include "ciaak.h"
-/* TODO configuration dependent includes */
-#include "ciaaDevices.h"
-#include "ciaaSerialDevices.h"
-#include "ciaaBlockDevices.h"
-#include "ciaaDriverUart.h"
-#include "ciaaDriverFlash.h"
-#include "ciaaDriverAio.h"
-#include "ciaaDriverDio.h"
-#include "ciaaDriverPwm.h"
 
-#include "ciaaPOSIX_stdlib.h"
+/*==================[macros]=================================================*/
 
-/*==================[macros and definitions]=================================*/
+/*==================[typedef]================================================*/
 
-/*==================[internal data declaration]==============================*/
+/*==================[external data declaration]==============================*/
 
-/*==================[internal functions declaration]=========================*/
+/*==================[external functions declaration]=========================*/
 
-/*==================[internal data definition]===============================*/
-
-/*==================[external data definition]===============================*/
-
-/*==================[internal functions definition]==========================*/
-
-/*==================[external functions definition]==========================*/
-void ciaak_start(void)
-{
-   /* init stdlib */
-   /* ATTENTION: ciaaPOSIX_stdlib_init has to be done before to any call to
-    * ciaaPOSIX_malloc or ciaak_malloc */
-   ciaaPOSIX_stdlib_init();
-
-   /* init device manager */
-   ciaaDevices_init();
-
-   /* init devices types */
-   ciaaSerialDevices_init();
-   ciaaBlockDevices_init();
-
-   /* init drivers */
-   ciaaDriverUart_init();
-   ciaaDriverFlash_init();
-
-   /* ciaaDioDevices_init(); */
-   ciaaDriverDio_init();
-   ciaaDriverAio_init();
-   ciaaDriverPwm_init();
-}
-
-void *ciaak_malloc(size_t size)
-{
-   /* try to alloc memory */
-   void* ret = ciaaPOSIX_malloc(size);
-
-   /* kernel memory shall not failed :( */
-   if (NULL == ret)
-   {
-      ciaaPOSIX_printf("Kernel out of memory :( ...\n");
-      while(1)
-      {
-         /* TODO perform an kernel panic or like */
-      }
-   }
-
-   return ret;
-}
-
+/** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
+#endif /* #ifndef _ESP8266_H_ */
 
