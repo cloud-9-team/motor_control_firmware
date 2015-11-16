@@ -1,4 +1,7 @@
-/* Copyright 2015, Juan Pablo Moreno (UNCa)
+/* Copyright 2014, Mariano Cerdeiro
+ * Copyright 2014, Pablo Ridolfi
+ * Copyright 2014, Juan Cecconi
+ * Copyright 2014, Gustavo Muro
  *
  * This file is part of CIAA Firmware.
  *
@@ -30,81 +33,48 @@
  *
  */
 
-#ifndef _CIAADRIVERPWM_INTERNAL_H_
-#define _CIAADRIVERPWM_INTERNAL_H_
-/** \brief Internal Header file of PWM Driver
+#ifndef _ESP8266_H_
+#define _ESP8266_H_
+/** \brief Blinking example header file
+ **
+ ** This is a mini example of the CIAA Firmware
  **
  **/
 
 /** \addtogroup CIAA_Firmware CIAA Firmware
  ** @{ */
-/** \addtogroup Drivers CIAA Drivers
+/** \addtogroup Examples CIAA Firmware Examples
  ** @{ */
-/** \addtogroup PWM PWM Drivers
+/** \addtogroup Blinking Blinking example header file
  ** @{ */
 
 /*
  * Initials     Name
  * ---------------------------
- * JPM       Juan Pablo Moreno
+ *
  */
 
 /*
  * modification history (new versions first)
  * -----------------------------------------------------------
- * 20150923 v0.0.1 JPM first functional version
+ * yyyymmdd v0.0.1 initials initial version
  */
 
 /*==================[inclusions]=============================================*/
-#include "ciaaPOSIX_stdint.h"
 
-/*==================[cplusplus]==============================================*/
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include "at_parser.h"
 
 /*==================[macros]=================================================*/
 
 /*==================[typedef]================================================*/
-/** \brief PWM Type */
-typedef struct ciaaDriverPwm_portStruct {
-   uint8_t port;				/** <= PWM port number */
-   uint8_t pin;					/** <= pin number of port */
-   uint8_t function;			/** <= function number */
-   uint8_t ctout;			    /** <= PWM CTOUT */
-
-} ciaaDriverPwm_portType;
-
-typedef struct {
-	struct {
-		uint32_t frequence;		/** <= PWM frequence */
-		uint8_t  index_counter; /** <= PWM counter */
-	} config;
-} ciaaDriverPwm_pwmType;
 
 /*==================[external data declaration]==============================*/
-/** \brief Pwm 0 */
-extern ciaaDriverPwm_pwmType ciaaDriverPwm_pwm0;
-
-/** \brief Pwm 1 */
-extern ciaaDriverPwm_pwmType ciaaDriverPwm_pwm1;
-
-/** \brief Pwm 2 */
-extern ciaaDriverPwm_pwmType ciaaDriverPwm_pwm2;
-
-/** \brief Pwm 3 */
-extern ciaaDriverPwm_pwmType ciaaDriverPwm_pwm3;
-
 
 /*==================[external functions declaration]=========================*/
 
-/*==================[cplusplus]==============================================*/
-#ifdef __cplusplus
-}
-#endif
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /** @} doxygen end group definition */
 /*==================[end of file]============================================*/
-#endif /* #ifndef _CIAADRIVERPWM_INTERNAL_H_ */
+#endif /* #ifndef _ESP8266_H_ */
 

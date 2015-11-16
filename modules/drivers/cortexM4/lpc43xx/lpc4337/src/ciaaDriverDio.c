@@ -92,13 +92,13 @@ typedef struct  {
 const ciaaDriverDio_dioType ciaaDriverDio_Inputs[] = { {2,0},{2,1},{2,2},{2,3},{3,11},{3,12},{3,13},{3,14} };
 const ciaaDriverDio_dioType ciaaDriverDio_Outputs[] =  { {5,1},{2,6},{2,5},{2,4},{5,12},{5,13},{5,14},{1,8} };
 #elif (edu_ciaa_nxp == BOARD)
-const ciaaDriverDio_dioType ciaaDriverDio_Inputs[] = { {0,4},{0,8},{0,9},{1,9} };
-const ciaaDriverDio_dioType ciaaDriverDio_Outputs[] =  { {5,0},{5,1},{5,2},{0,14},{1,11},{1,12} };
+const ciaaDriverDio_dioType ciaaDriverDio_Inputs[] = { {0,4},{0,8},{0,9},{1,9},{3,5},{3,7} };
+const ciaaDriverDio_dioType ciaaDriverDio_Outputs[] =  { {5,0},{5,1},{5,2},{0,14},{1,11},{1,12},{2,8},{3,4},{3,3},{5,15} };
 #endif
 
 /** \brief Device for DIO 0 */
 static ciaaDevices_deviceType ciaaDriverDio_in0 = {
-   "in/0",                          /** <= driver name */
+   "in/0",                         /** <= driver name */
    ciaaDriverDio_open,             /** <= open function */
    ciaaDriverDio_close,            /** <= close function */
    ciaaDriverDio_read,             /** <= read function */
@@ -112,7 +112,7 @@ static ciaaDevices_deviceType ciaaDriverDio_in0 = {
 
 /** \brief Device for DIO 1 */
 static ciaaDevices_deviceType ciaaDriverDio_out0 = {
-   "out/0",                          /** <= driver name */
+   "out/0",                        /** <= driver name */
    ciaaDriverDio_open,             /** <= open function */
    ciaaDriverDio_close,            /** <= close function */
    ciaaDriverDio_read,             /** <= read function */
@@ -206,6 +206,23 @@ static void ciaa_lpc4337_gpio_init(void)
    Chip_GPIO_ClearValue(LPC_GPIO_PORT, 5,(1<<0)|(1<<1)|(1<<2));
    Chip_GPIO_ClearValue(LPC_GPIO_PORT, 0,(1<<14));
    Chip_GPIO_ClearValue(LPC_GPIO_PORT, 1,(1<<11)|(1<<12));
+
+   Chip_SCU_PinMux(6,4,MD_PUP|MD_EZI|MD_ZI,FUNC0); 	/* GPIO3[3]  -> GPIO1 en EDU-CIAA */
+   Chip_GPIO_SetDir(LPC_GPIO_PORT, 3, (1 << 3), 1); /* Configurado como salida de la EDU-CIAA */
+   Chip_SCU_PinMux(6,5,MD_PUP|MD_EZI|MD_ZI,FUNC0); 	/* GPIO3[4]  -> GPIO2 en EDU-CIAA */
+   Chip_GPIO_SetDir(LPC_GPIO_PORT, 3, (1 << 4), 1); /* Configurado como salida de la EDU-CIAA */
+   Chip_SCU_PinMux(6,7,MD_PUP|MD_EZI|MD_ZI,FUNC4); 	/* GPIO5[15] -> GPIO3 en EDU-CIAA */
+   Chip_GPIO_SetDir(LPC_GPIO_PORT, 5, (1 << 15), 1);/* Configurado como salida de la EDU-CIAA */
+   Chip_SCU_PinMux(6,9,MD_PUP|MD_EZI|MD_ZI,FUNC0); 	/* GPIO3[5]  -> GPIO5 en EDU-CIAA */
+   Chip_GPIO_SetDir(LPC_GPIO_PORT, 3, (1 << 5), 0); /* Configurado como entrada a la EDU-CIAA */
+   Chip_SCU_PinMux(6,11,MD_PUP|MD_EZI|MD_ZI,FUNC0); /* GPIO3[7]  -> GPIO7 en EDU-CIAA */
+   Chip_GPIO_SetDir(LPC_GPIO_PORT, 3, (1 << 7), 0);	/* Configurado como entrada a la EDU-CIAA */
+   Chip_SCU_PinMux(6,12,MD_PUP|MD_EZI|MD_ZI,FUNC0); /* GPIO2[8]  -> GPIO8 en EDU-CIAA */
+   Chip_GPIO_SetDir(LPC_GPIO_PORT, 2, (1 << 8), 1); /* Configurado como salida de la EDU-CIAA */
+   Chip_SCU_PinMux(6,1,MD_PUP|MD_EZI|MD_ZI,FUNC0); 	/* GPIO3[0]  -> GPIO0 en EDU-CIAA */
+   Chip_GPIO_SetDir(LPC_GPIO_PORT, 3, (1<<0), 0);	/* Configurado como entrada a la EDU-CIAA */
+   Chip_SCU_PinMux(7,5,MD_PUP|MD_EZI|MD_ZI,FUNC0); 	/* GPIO3[13] -> TEC_COL2 en EDU-CIAA */
+   Chip_GPIO_SetDir(LPC_GPIO_PORT, 3, (1<<13), 0);	/* Configurado como entrada a la EDU-CIAA */
 
 #else
    #error please define BOARD variable!

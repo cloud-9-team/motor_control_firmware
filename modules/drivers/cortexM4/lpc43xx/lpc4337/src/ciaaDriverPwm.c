@@ -77,6 +77,9 @@ static ciaaDriverPwm_portType const ciaaDriverPwm_port1;
 /** \brief Port resources definitions for PWM 2 */
 static ciaaDriverPwm_portType const ciaaDriverPwm_port2;
 
+/** \brief Port resources definitions for PWM 3 */
+static ciaaDriverPwm_portType const ciaaDriverPwm_port3;
+
 /** \brief Port settings for PWM 0 */
 ciaaDriverPwm_pwmType ciaaDriverPwm_pwm0;
 
@@ -86,6 +89,9 @@ ciaaDriverPwm_pwmType ciaaDriverPwm_pwm1;
 /** \brief Port settings for PWM 2 */
 ciaaDriverPwm_pwmType ciaaDriverPwm_pwm2;
 
+/** \brief Port settings for PWM 3 */
+ciaaDriverPwm_pwmType ciaaDriverPwm_pwm3;
+
 /** \brief Device for PWM 0 */
 static ciaaDevices_deviceType ciaaDriverPwm_device0;
 
@@ -94,6 +100,9 @@ static ciaaDevices_deviceType ciaaDriverPwm_device1;
 
 /** \brief Device for PWM 2 */
 static ciaaDevices_deviceType ciaaDriverPwm_device2;
+
+/** \brief Device for PWM 3 */
+static ciaaDevices_deviceType ciaaDriverPwm_device3;
 /*==================[internal functions declaration]=========================*/
 
 /*==================[internal data definition]===============================*/
@@ -102,13 +111,15 @@ static ciaaDevices_deviceType ciaaDriverPwm_device2;
    /** \brief Port resources definitions for PWM 0 */
    static ciaaDriverPwm_portType const ciaaDriverPwm_port0 = { 1, 5, FUNC1, 10 };
 #elif (BOARD == edu_ciaa_nxp)
-   #define CIAA_DRIVER_PWM_DEVICE_COUNTER	3
+   #define CIAA_DRIVER_PWM_DEVICE_COUNTER	4
    /** \brief Port resources definitions for PWM 0 */
-   static ciaaDriverPwm_portType const ciaaDriverPwm_port0 = { 2, 10, FUNC1, 2 };
+   static ciaaDriverPwm_portType const ciaaDriverPwm_port0 = { 7, 4, FUNC1, 13 }; //T_COL1
    /** \brief Port resources definitions for PWM 1 */
-   static ciaaDriverPwm_portType const ciaaDriverPwm_port1 = { 2, 11, FUNC1, 5 };
+   static ciaaDriverPwm_portType const ciaaDriverPwm_port1 = { 1, 5, FUNC1, 10 }; //T_COL0
    /** \brief Port resources definitions for PWM 2 */
-   static ciaaDriverPwm_portType const ciaaDriverPwm_port2 = { 2, 12, FUNC1, 4 };
+   static ciaaDriverPwm_portType const ciaaDriverPwm_port2 = { 4, 3, FUNC1, 3  }; //T_FIL3
+   /** \brief Port resources definitions for PWM 3 */
+   static ciaaDriverPwm_portType const ciaaDriverPwm_port3 = { 4, 2, FUNC1, 0  }; //T_FIL2
 #endif
 
 /** \brief Device for PWM 0 */
@@ -142,7 +153,7 @@ static ciaaDevices_deviceType ciaaDriverPwm_device1 = {
 #if (CIAA_DRIVER_PWM_DEVICE_COUNTER >= 3)
 /** \brief Device for PWM 2 */
 static ciaaDevices_deviceType ciaaDriverPwm_device2 = {
-   "pwm/2",                         /** <= driver name */
+   "pwm/2",                        /** <= driver name */
    ciaaDriverPwm_open,             /** <= open function */
    ciaaDriverPwm_close,            /** <= close function */
    ciaaDriverPwm_read,             /** <= read function */
@@ -154,9 +165,31 @@ static ciaaDevices_deviceType ciaaDriverPwm_device2 = {
    (void *)&ciaaDriverPwm_port2    /** <= NULL no lower layer */
 };
 #endif
+#if (CIAA_DRIVER_PWM_DEVICE_COUNTER >= 4)
+/** \brief Device for PWM 3 */
+static ciaaDevices_deviceType ciaaDriverPwm_device3 = {
+   "pwm/3",                        /** <= driver name */
+   ciaaDriverPwm_open,             /** <= open function */
+   ciaaDriverPwm_close,            /** <= close function */
+   ciaaDriverPwm_read,             /** <= read function */
+   ciaaDriverPwm_write,            /** <= write function */
+   ciaaDriverPwm_ioctl,            /** <= ioctl function */
+   NULL,                           /** <= seek function is not provided */
+   NULL,                           /** <= upper layer */
+   (void *)&ciaaDriverPwm_pwm3,	   /** <= layer */
+   (void *)&ciaaDriverPwm_port3    /** <= NULL no lower layer */
+};
+#endif
 
 
-#if (CIAA_DRIVER_PWM_DEVICE_COUNTER == 3)
+#if (CIAA_DRIVER_PWM_DEVICE_COUNTER == 4)
+static ciaaDevices_deviceType * const ciaaPwmDevices[] = {
+   &ciaaDriverPwm_device0,
+   &ciaaDriverPwm_device1,
+   &ciaaDriverPwm_device2,
+   &ciaaDriverPwm_device3
+};
+#elif (CIAA_DRIVER_PWM_DEVICE_COUNTER == 3)
 static ciaaDevices_deviceType * const ciaaPwmDevices[] = {
    &ciaaDriverPwm_device0,
    &ciaaDriverPwm_device1,
@@ -197,7 +230,7 @@ extern ciaaDevices_deviceType * ciaaDriverPwm_open(char const * path,
    ciaaDriverPwm_portType * port = device->loLayer;
 
    if((device != &ciaaDriverPwm_device0) && (device != &ciaaDriverPwm_device1) &&
-	  (device != &ciaaDriverPwm_device2))
+	  (device != &ciaaDriverPwm_device2) && (device != &ciaaDriverPwm_device3))
    {
 	  device = NULL;
    }
@@ -232,7 +265,7 @@ extern ssize_t ciaaDriverPwm_read(ciaaDevices_deviceType const * const device, u
    ssize_t ret = -1;
 
    if((device != &ciaaDriverPwm_device0) && (device != &ciaaDriverPwm_device1) &&
-	  (device != &ciaaDriverPwm_device2))
+	  (device != &ciaaDriverPwm_device2) && (device != &ciaaDriverPwm_device3))
    {
 	   ret = -1;
    }
@@ -252,7 +285,7 @@ extern ssize_t ciaaDriverPwm_write(ciaaDevices_deviceType const * const device, 
    ssize_t ret = -1;
 
    if((device != &ciaaDriverPwm_device0) && (device != &ciaaDriverPwm_device1) &&
-	  (device != &ciaaDriverPwm_device2))
+	  (device != &ciaaDriverPwm_device2) && (device != &ciaaDriverPwm_device3))
    {
 	   ret = -1;
    }

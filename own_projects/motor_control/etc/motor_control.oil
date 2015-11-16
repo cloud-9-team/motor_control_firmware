@@ -81,19 +81,47 @@ TASK PeriodicTask {
     PRIORITY = 10;
     ACTIVATION = 1;
     STACK = 512;
-    TYPE = EXTENDED;
+    TYPE = BASIC;
     SCHEDULE = FULL;
     RESOURCE = POSIXR;
-    EVENT = POSIXE;
-    AUTOSATART = TRUE {
-        APPMODE = AppMode1;
-    }
+}
+
+TASK EncoderTask {
+    PRIORITY = 20;
+    ACTIVATION = 1;
+    STACK = 1024;
+    TYPE = BASIC;
+    SCHEDULE = FULL;
+    RESOURCE = POSIXR;
+}
+
+TASK SendStatusTask {
+    PRIORITY = 15;
+    ACTIVATION = 1;
+    STACK = 1024;
+    TYPE = BASIC;
+    SCHEDULE = FULL;
+    RESOURCE = POSIXR;
 }
 
 ALARM ActivatePeriodicTask {
     COUNTER = SoftwareCounter;
     ACTION = ACTIVATETASK {
         TASK = PeriodicTask;
+    }
+}
+
+ALARM ActivateEncoderTask {
+    COUNTER = SoftwareCounter;
+    ACTION = ACTIVATETASK {
+        TASK = EncoderTask;
+    }
+}
+
+ALARM ActivateSendStatusTask {
+    COUNTER = SoftwareCounter;
+    ACTION = ACTIVATETASK {
+        TASK = SendStatusTask;
     }
 }
 
@@ -145,6 +173,18 @@ ISR UART2_IRQHandler {
 ISR UART3_IRQHandler {
    INTERRUPT = UART3;
    CATEGORY = 2;
+   PRIORITY = 0;
+};
+
+ISR GPIO0_IRQHandler {
+   INTERRUPT = GPIO0;
+   CATEGORY = 1;
+   PRIORITY = 0;
+};
+
+ISR GPIO1_IRQHandler {
+   INTERRUPT = GPIO1;
+   CATEGORY = 1;
    PRIORITY = 0;
 };
 
