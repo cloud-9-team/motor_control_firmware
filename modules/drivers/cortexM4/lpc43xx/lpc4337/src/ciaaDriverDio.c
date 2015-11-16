@@ -373,7 +373,7 @@ extern ssize_t ciaaDriverDio_write(ciaaDevices_deviceType const * const device, 
          for(i = 0, j = 0; (i < ciaaDriverDio_OutputCount) && (j < size); i++)
          {
             ciaa_lpc4337_writeOutput(i, buffer[j] & (1 << (i - 8 * j)));
-            if( (i > 0) && ((i & 0x07) == 0) )
+            if( (i > 0) && ((i & 0x07) == 0x07) )
             {
                j++;
             }

@@ -219,12 +219,13 @@ TASK(InitTask)
 	encoder_init();
 
 	/* Configuracion de los GPIO de salida. */
-	ciaaPOSIX_read(fd_out,&gpio_buffer,2);
+	//ciaaPOSIX_read(fd_out,&gpio_buffer,2);
 	/* Se guardan los valores que vienen por defecto en la lectura y se setean en 0
 	 * 	aquellos que luego seran cambiados en la escritura. */
-	gpio_buffer &= ~(ENABLE12|ENABLE34|ESP8266_EN|ESP8266_RST);
+	//gpio_buffer &= ~(ENABLE12|ENABLE34|ESP8266_EN|ESP8266_RST);
 	/* Habilitacion de los enable, /reset y chip_enable del puente H. */
-	gpio_buffer ^= (ENABLE12|ENABLE34|ESP8266_EN|ESP8266_RST);
+	//gpio_buffer ^= (ENABLE12|ENABLE34|ESP8266_EN|ESP8266_RST);
+	gpio_buffer |= (ENABLE12|ENABLE34|ESP8266_EN|ESP8266_RST);
 	ciaaPOSIX_write(fd_out,&gpio_buffer,2);
 
 	SetRelAlarm(ActivatePeriodicTask, 10, 5);
